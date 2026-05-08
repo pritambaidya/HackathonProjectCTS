@@ -1,18 +1,24 @@
+// tests/login.spec.js
 import { test, expect } from '@playwright/test';
+import { LoginPage } from '../pages/LoginPage';
 
-test('has title', async ({ page }) => {
-  await page.goto('https://playwright.dev/');
+test.describe('Login Functionality', () => {
+    let loginPage: LoginPage;
 
-  // Expect a title "to contain" a substring.
-  await expect(page).toHaveTitle(/Playwright/);
-});
+    test.beforeEach(async ({ page }) => {
+        loginPage = new LoginPage(page);
+        await loginPage.navigate();
+    });
 
-test('get started link', async ({ page }) => {
-  await page.goto('https://playwright.dev/');
+    test('Positive Test - Successful Login', async ({ browserName }) => {
+        await loginPage.login('prajwalpujar24@gmail.com', 'Prajwal@123', browserName);
+        await expect(loginPage.errorMessage).not.toBeVisible();
+        console.log("Login successful");
+    });
 
-  // Click the get started link.
-  await page.getByRole('link', { name: 'Get started' }).click();
-
-  // Expects page to have a heading with the name of Installation.
-  await expect(page.getByRole('heading', { name: 'Installation' })).toBeVisible();
+    test('Negative Test - Invalid Credentials', async ({ browserName }) => {
+    await loginPage.login('wrong@email.com', 'WrongPass123', browserName);
+    await expect(loginPage.errorMessage).toBeVisible();
+    console.log("Login failed as expected with error message");
+    });
 });
