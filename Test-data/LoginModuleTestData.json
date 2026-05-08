@@ -1,0 +1,11 @@
+{
+    "validCredentials":{
+        "email":"prajwalpujar24@gmail.com",
+        "password":"Prajwal@123"
+    },
+
+    "InvalidCredentials":{
+        "email":"wrong@email.com",
+        "password":"WrongPass123"
+    }
+}
