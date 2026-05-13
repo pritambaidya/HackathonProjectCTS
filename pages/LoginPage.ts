@@ -24,10 +24,13 @@ export class LoginPage {
     }
 
     async navigate() {
-        await this.page.goto('https://www.urbanladder.com/');
+        await this.page.goto('https://www.urbanladder.com', { 
+    waitUntil: 'networkidle' 
+});
     }
 
     async login(email : string , password : string , browserName : ('chromium' | 'firefox' | 'webkit')) {
+       
         await this.accountMenu.click();
         await this.signInBtn.click();
 
