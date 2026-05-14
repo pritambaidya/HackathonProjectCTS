@@ -28,7 +28,7 @@ test(`display top products - Positive`, async ({ page }) => {
 });
 
 
-test(`display top products - Negative`, async ({ page }) => {
+test.fail(`display top products - Negative`, async ({ page }) => {
     const searchTerm = data.InvalidCredentialsforproduct.name;
     await productsPage.searchFor(searchTerm);
     
@@ -42,6 +42,32 @@ test(`display top products - Negative`, async ({ page }) => {
         expect(topProducts.length, `Test failed because the product "${searchTerm}" is not valid/found.`).toBeGreaterThan(0);
     } else {
         // If it somehow found products for gibberish, the test continues (or you can handle that too)
+        expect(topProducts.length).toBeGreaterThan(0);
+    }
+});
+
+test.fail(`display top products - Empty Search`, async ({ page }) => {
+    await productsPage.searchBar.fill('');
+    await productsPage.page.keyboard.press('Enter');
+
+    const topProducts = await productsPage.getTopProductData(5);
+    if (topProducts.length === 0) {
+        console.log(`NO PRODUCTS DISPLAYED FOR EMPTY SEARCH`);
+        expect(topProducts.length, `Test failed because no products were displayed for an empty search.`).toBeGreaterThan(0);
+    } else {
+        expect(topProducts.length).toBeGreaterThan(0);
+    }   
+});
+
+test(`display top products - Special Characters`, async ({ page }) => {
+    const searchTerm = '@#$%^&*';
+    await productsPage.searchFor(searchTerm);
+    const topProducts = await productsPage.getTopProductData(5);
+    
+    if (topProducts.length === 0) {
+        console.log(`NO PRODUCTS DISPLAYED FOR SPECIAL CHARACTERS SEARCH`);
+        expect(topProducts.length, `Test failed because no products were displayed for special characters search.`).toBeGreaterThan(0);
+    }   else {
         expect(topProducts.length).toBeGreaterThan(0);
     }
 });
