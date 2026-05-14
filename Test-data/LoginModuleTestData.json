@@ -7,5 +7,16 @@
     "InvalidCredentials":{
         "email":"wrong@email.com",
         "password":"WrongPass123"
+    },
+
+
+    "validCredentialsforproduct":{
+        "name":"bedside tables"
+    },
+
+    "InvalidCredentialsforproduct":{
+        "name":"baseball caps"
     }
+
+
 }

@@ -1,20 +1,47 @@
 import { test, expect } from '@playwright/test';
 import { LoginPage } from '../pages/LoginPage';
-import {  ProductsPage } from '../pages/ProductPage';
+import { ProductsPage } from '../pages/ProductPage';
 import data from '../Test-data/LoginModuleTestData.json' assert { type: 'json' };
+
+
 let loginPage: LoginPage;
 let productsPage : ProductsPage;
-test.beforeEach(async ({ page , browserName}) => {
-        test.setTimeout(60000);
-        loginPage = new LoginPage(page);
-        productsPage = new ProductsPage(page);
-        await loginPage.navigate();
-        await loginPage.login(data.validCredentials.email, data.validCredentials.password, browserName);
+
+test.beforeEach(async ({ page, browserName }) => {
+    test.setTimeout(60000);
+    loginPage = new LoginPage(page);
+    productsPage = new ProductsPage(page);
+    await loginPage.navigate();
+    await loginPage.login(data.validCredentials.email, data.validCredentials.password, browserName);
 });
 
-test('display top products' , async({page})=>{
-    await productsPage.searchFor('chairs');
-    await productsPage.applyStorageFilter();
+// Use the product name in the test title for better reporting
+
+test(`display top products - Positive`, async ({ page }) => {
+        await productsPage.searchFor(data.validCredentialsforproduct.name);
+        await productsPage.applyStorageFilter();
+        const topProducts = await productsPage.getTopProductData(5);
+        productsPage.displayTable(topProducts);
+        
+        // Assert that we actually got results back
+        expect(topProducts.length).toBeGreaterThan(0);
+});
+
+
+test(`display top products - Negative`, async ({ page }) => {
+    const searchTerm = data.InvalidCredentialsforproduct.name;
+    await productsPage.searchFor(searchTerm);
+    
     const topProducts = await productsPage.getTopProductData(5);
-    productsPage.displayTable(topProducts);
-})
+    
+    if (topProducts.length === 0) {
+        // Log the specific message you requested
+        console.log(`THE PRODUCT "${searchTerm.toUpperCase()}" IS NOT VALID`);
+        
+        // This force-fails the test with a descriptive error message in the report
+        expect(topProducts.length, `Test failed because the product "${searchTerm}" is not valid/found.`).toBeGreaterThan(0);
+    } else {
+        // If it somehow found products for gibberish, the test continues (or you can handle that too)
+        expect(topProducts.length).toBeGreaterThan(0);
+    }
+});
