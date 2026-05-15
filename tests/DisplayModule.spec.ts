@@ -8,7 +8,7 @@ let loginPage: LoginPage;
 let productsPage : ProductsPage;
 
 test.beforeEach(async ({ page, browserName }) => {
-    test.setTimeout(60000);
+    
     loginPage = new LoginPage(page);
     productsPage = new ProductsPage(page);
     await loginPage.navigate();
