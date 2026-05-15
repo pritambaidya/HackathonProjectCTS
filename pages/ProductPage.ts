@@ -21,12 +21,23 @@ export class ProductsPage {
     await this.page.keyboard.press('Enter');
 }
 
-    async applyStorageFilter() {
-        await this.storageFilter.click();
-        await this.firstCheckbox.click();
-        // Give a moment for the results to filter
-        await this.page.waitForTimeout(1000); 
-    }
+   async applyStorageFilter() {
+    // 1. Wait for the button to exist in the DOM
+    await this.storageFilter.waitFor({ state: 'attached', timeout: 15000 });
+
+    // 2. Scroll it into the view (Crucial for headless Jenkins)
+    await this.storageFilter.scrollIntoViewIfNeeded();
+
+    // 3. Use a 'force' click to bypass any hidden overlays
+    await this.storageFilter.click({ force: true });
+
+    // 4. Wait for the checkbox to be visible before clicking it
+    await this.firstCheckbox.waitFor({ state: 'visible', timeout: 10000 });
+    await this.firstCheckbox.click();
+    
+    // 5. Instead of a hard timeout, wait for the network to finish the filter action
+    await this.page.waitForLoadState('domcontentloaded');
+}
 
     async getTopProductData(count: number) {
     let results: string[][] = [];
