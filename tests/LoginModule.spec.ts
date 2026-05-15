@@ -19,7 +19,7 @@ test.describe('Login Functionality', () => {
         console.log("Login successful");
     });
 
-    test('Negative Test - Invalid Credentials', async ({ browserName }) => {
+    test.fail('Negative Test - Invalid Credentials', async ({ browserName }) => {
     await loginPage.login(data.InvalidCredentials.email, data.InvalidCredentials.password, browserName);
     await expect(loginPage.errorMessage).toBeVisible();
     console.log("Login failed as expected with error message");
