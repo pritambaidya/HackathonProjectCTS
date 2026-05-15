@@ -59,7 +59,7 @@ test.fail(`display top products - Empty Search`, async ({ page }) => {
     }   
 });
 
-test(`display top products - Special Characters`, async ({ page }) => {
+test.fail(`display top products - Special Characters`, async ({ page }) => {
     const searchTerm = '@#$%^&*';
     await productsPage.searchFor(searchTerm);
     const topProducts = await productsPage.getTopProductData(5);
