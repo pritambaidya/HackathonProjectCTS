@@ -25,7 +25,7 @@ export class LoginPage {
 
     async navigate() {
         await this.page.goto('https://www.urbanladder.com', { 
-    waitUntil: 'networkidle' 
+    waitUntil: 'load' 
 });
     }
 
