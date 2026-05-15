@@ -10,7 +10,7 @@ export class ProductsPage {
     constructor(page: Page) {
         this.page = page;
         this.searchBar = page.getByRole('textbox', { name: 'Search' });
-        this.storageFilter = page.getByRole('button', { name: 'Storage Type filter' });
+       this.storageFilter = page.locator('button:has-text("Storage")');
         this.firstCheckbox = page.getByRole('checkbox', { name: 'Checkbox' }).first();
         this.productCards = page.locator('.o0mbO');
     }
