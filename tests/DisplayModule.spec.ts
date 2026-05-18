@@ -18,6 +18,7 @@ test.beforeEach(async ({ page, browserName }) => {
 // Use the product name in the test title for better reporting
 
 test(`display top products - Positive`, async ({ page }) => {
+      
         await productsPage.searchFor(data.validCredentialsforproduct.name);
         await productsPage.applyStorageFilter();
         const topProducts = await productsPage.getTopProductData(5);

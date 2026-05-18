@@ -10,33 +10,21 @@ export class ProductsPage {
     constructor(page: Page) {
         this.page = page;
         this.searchBar = page.getByRole('textbox', { name: 'Search' });
-       this.storageFilter = page.locator('button:has-text("STORAGE TYPE")');
+       this.storageFilter = page.getByRole('button', { name: 'Storage Type filter' });
         this.firstCheckbox = page.getByRole('checkbox', { name: 'Checkbox' }).first();
         this.productCards = page.locator('.o0mbO');
     }
 
    async searchFor(term: string) {
-     await this.page.waitForLoadState('domcontentloaded');
+     await this.page.waitForLoadState('networkidle');
     await this.page.getByRole('textbox' , {name : 'Search'}).fill(term)
     await this.page.keyboard.press('Enter');
 }
 
    async applyStorageFilter() {
-    // 1. Wait for the button to exist in the DOM
-    await this.storageFilter.waitFor({ state: 'attached', timeout: 15000 });
-
-    // 2. Scroll it into the view (Crucial for headless Jenkins)
-    await this.storageFilter.scrollIntoViewIfNeeded();
-
-    // 3. Use a 'force' click to bypass any hidden overlays
-    await this.storageFilter.click({ force: true });
-
-    // 4. Wait for the checkbox to be visible before clicking it
-    await this.firstCheckbox.waitFor({ state: 'visible', timeout: 10000 });
+    await this.storageFilter.click();
     await this.firstCheckbox.click();
-    
-    // 5. Instead of a hard timeout, wait for the network to finish the filter action
-    await this.page.waitForLoadState('domcontentloaded');
+    await this.page.waitForTimeout(1000);
 }
 
     async getTopProductData(count: number) {
