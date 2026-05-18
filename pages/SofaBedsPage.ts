@@ -10,10 +10,18 @@ export class SofaBedCartPage {
     this.sofaCumBedsLink = page.getByRole('link', { name: 'Sofa Cum Beds Sofa Cum Beds' });
   }
 
+  
   // Navigation action
   async navigateToSofaCumBeds(): Promise<void> {
     await this.sofaCumBedsLink.click();
   }
+
+  async navigate() {
+        await this.mainPage.goto('https://www.urbanladder.com', { 
+    waitUntil: 'load' 
+})};
+
+  
 
   // Opens a product link in a new tab and returns that new tab context
   async openProduct(productName: string): Promise<Page> {

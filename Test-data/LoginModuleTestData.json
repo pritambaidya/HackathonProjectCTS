@@ -9,6 +9,8 @@
         "password":"WrongPass123"
     },
 
+    "products":["Kowloon Sectional Pull Out" , "Felicity 3 Seater Click Clack" , "Kobi 2 Seater Fold Out Sofa"],
+
 
     "validCredentialsforproduct":{
         "name":"bedside tables"
