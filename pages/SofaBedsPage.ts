@@ -13,8 +13,10 @@ export class SofaBedCartPage {
   
   // Navigation action
   async navigateToSofaCumBeds(): Promise<void> {
-    await this.sofaCumBedsLink.click();
-  }
+  await this.sofaCumBedsLink.click();
+  // Waits until there are no network connections for at least 500ms
+  await this.mainPage.waitForLoadState('networkidle');
+}
 
   async navigate() {
         await this.mainPage.goto('https://www.urbanladder.com', { 
