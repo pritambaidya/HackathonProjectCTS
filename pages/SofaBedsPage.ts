@@ -66,4 +66,26 @@ export class SofaBedCartPage {
       console.log(text);
     }
   }
+  async deleteProducts(targetPage: Page): Promise<number> {
+    
+    const deleteButtons = targetPage.getByTestId('cart-item-delete-icon') 
+    const confirmDelete = targetPage.getByTestId('cart-item-remove-confirm-button');
+    const count = await deleteButtons.count();
+    let cn = count;
+    for (let i = 0; i < count; i++) {
+      if (i === count - 1) {
+        await deleteButtons.click();
+        await confirmDelete.click();
+        cn--;
+        return cn;
+      }
+      await deleteButtons.nth(i).click();
+      await confirmDelete.click();
+       cn--;
+      await targetPage.waitForTimeout(1000); // Adjust timeout as needed
+    }
+
+    return cn;
+  }
+  
 }
